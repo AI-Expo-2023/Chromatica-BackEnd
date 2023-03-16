@@ -8,4 +8,6 @@ const sequelize = new Sequelize({ ...config, sync: false });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.User = require('./user')(sequelize, Sequelize);
+
 module.exports = db;
