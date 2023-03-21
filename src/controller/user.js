@@ -7,7 +7,7 @@ const createUser = async(req, res) => {
     const PW = req.body.PW;
     const name = req.body.name;
     const Email = req.body.Email;
-    const photo = req.body.photo;
+    const photo = '../upload/image.png';
 
     try {
         const salt = crypto.randomBytes(32).toString("hex");

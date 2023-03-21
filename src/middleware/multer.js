@@ -2,10 +2,10 @@ const multer = require('multer');
 const path = require('path')
 
 const upload = multer({
-    dest: 'uploads/',
+    dest: 'upload/',
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, `uploads/${req.file.filename}` || 'uploads/image.png');
+            cb(null, `upload/${req.file.filename}` || 'upload/image.png');
         },
         filename: (req, file, cb) => {
             let newFileName = new Date().valueOf() + path.extname(file.originalname)
