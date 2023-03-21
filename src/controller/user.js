@@ -23,7 +23,7 @@ const createUser = async(req, res) => {
             where: { userID }
         })
 
-        if (Email || userID) {
+        if (userEmail || id) {
             return res.status(409).json({
                 message: "중복된 아이디나 이메일입니다.",
             });
