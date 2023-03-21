@@ -2,12 +2,14 @@ require('dotenv').config();
 
 const { env } = process;
 
-const development = {
-  username: env.DB_USER,
-  password: env.DB_PWD,
-  database: env.DB_NAME,
-  dialect: env.DB_DIALECT,
-  host: env.DB_HOST,
+{
+  development = {
+    username: process.env.DB_USER,
+    password: process.env.DB_PW,
+    database: process.env.DB_NAME,
+    dialect: process.env.DB_DIALECT,
+    host: process.env.DB_HOST,
+  }
 };
 
 module.exports = development;
