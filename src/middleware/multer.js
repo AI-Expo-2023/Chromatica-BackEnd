@@ -1,5 +1,12 @@
 const multer = require('multer');
-const path = require('path')
+const fs = require('fs')
+
+try {
+    fs.readdirSync('./upload');
+} catch (error) {
+    console.error('not exist directory.');
+    fs.mkdirSync('./upload');
+}
 
 const upload = multer({
     dest: 'upload/',
