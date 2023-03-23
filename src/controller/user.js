@@ -49,6 +49,38 @@ const createUser = async(req, res) => {
     }
 }
 
+const userPhoto = async (req, res) => {
+    const userID = req.params.userID;
+    const photo = req.file;
+
+    console.log(photo)
+
+    try {
+        const user = await User.findOne({
+            where: { userID },
+        })
+
+        if (!user) return res.status(404).json({
+            "message" : "요청하신 사용자를 찾을 수 없습니다."
+        })
+
+        await user.update({
+            photo,
+        })
+
+        return res.status(200).json({
+            "message" : "요청에 성공했습니다."
+        })
+
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     createUser,
+    userPhoto,
 }
