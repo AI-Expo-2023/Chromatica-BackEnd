@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
+const emailSending = require('../middleware/email');
 
 const createUser = async(req, res) => {
     const userID = req.body.ID;
@@ -80,7 +81,30 @@ const userPhoto = async (req, res) => {
     }
 }
 
+const verifyEmail = (req, res) => {
+
+    const code = () => {
+        return Math.floor(Math.random() * 888889) + 111111;
+    }
+
+    const verifyCode = code();
+
+    try {
+        emailSending.Server(req, res, verifyCode);
+        return res.status(201).json({
+            "message": "요청에 성공했습니다.",
+            "code" : verifyCode,
+        })
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     createUser,
     userPhoto,
+    verifyEmail,
 }
