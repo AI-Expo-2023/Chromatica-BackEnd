@@ -139,7 +139,8 @@ const signIn = async (req, res) => {
             })
 
             return res.status(200).json({
-                "message" : "요청에 성공했습니다."
+                "message": "요청에 성공했습니다.",
+                accessToken,
             })
         }
         
