@@ -2,6 +2,10 @@ const User = require('../models').User;
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const emailSending = require('../middleware/email');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const createUser = async(req, res) => {
     const userID = req.body.ID;
@@ -103,8 +107,58 @@ const verifyEmail = (req, res) => {
     }
 }
 
+const signIn = async (req, res) => {
+    const userID = req.body.ID;
+    const PW = req.body.PW;
+    const Secret = process.env.secretKey;
+
+    try {
+        const thisUser = await User.findOne({
+            where: { userID },
+        })
+        
+        if (!thisUser) return res.status(404).json({
+            "message" : "존재하지 않는 아이디입니다."
+        })
+
+        if (thisUser.accessToken) return res.status(409).json({
+            "message" : "이미 로그인한 상태입니다."
+        })
+
+        const hashPassword = crypto
+            .pbkdf2Sync(PW, thisUser.salt, 2, 32, "sha512")
+            .toString("hex");
+
+        if (thisUser.PW == hashPassword) {
+            const accessToken = jwt.sign({
+                id: thisUser.userID,
+            }, Secret)
+
+            await thisUser.update({
+                accessToken,
+            })
+
+            return res.status(200).json({
+                "message" : "요청에 성공했습니다."
+            })
+        }
+        
+        else {
+            return res.status(409).json({
+                "message" : "비밀번호가 일치하지 않습니다."
+            })
+        }
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     createUser,
     userPhoto,
     verifyEmail,
+    signIn,
 }
