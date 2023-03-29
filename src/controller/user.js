@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
+const verifyToken = require('../middleware/JWT');
 const emailSending = require('../middleware/email');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
@@ -157,9 +158,37 @@ const signIn = async (req, res) => {
     }
 }
 
+const signOut = async (req, res) => {
+    const userID = req.decoded.id;
+
+    console.log(userID)
+
+    try {
+        if (!userID) return res.status(404).json({
+            "message" : "로그인이 필요합니다."
+        })
+
+        const thisUser = await User.findOne({
+            where: {userID}
+        })
+
+        await thisUser.update({
+            accessToken : null,
+        })
+
+        return res.status(204).json({})
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     createUser,
     userPhoto,
     verifyEmail,
     signIn,
+    signOut,
 }
