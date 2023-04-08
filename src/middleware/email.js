@@ -14,8 +14,7 @@ const sendEmail = nodemailer.createTransport({
     },
   })
 
-const Server = async (req, res, code) => {
-    const email = req.body.email;
+const Server = async (email, res, code) => {
 
       try {
         const mailhtml = `
@@ -75,9 +74,7 @@ const Server = async (req, res, code) => {
           await sendEmail.sendMail(mailOption);
       } catch (err) {
           console.error(err);
-          return res.status(400).json({
-            "message" : "요청에 실패했습니다."
-        })
+          return 400;
       }
 }
   
