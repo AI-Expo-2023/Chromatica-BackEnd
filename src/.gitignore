@@ -1,0 +1,4 @@
+.env
+upload
+node_modules
+yarn-error.log

@@ -88,18 +88,21 @@ const userPhoto = async (req, res) => {
 
 const verifyEmail = (req, res) => {
 
-    const code = () => {
-        return Math.floor(Math.random() * 888889) + 111111;
-    }
+    const email = req.body.Email;
 
-    const verifyCode = code();
+    const verifyCode = Math.floor(Math.random() * 888889) + 111111;
 
     try {
-        emailSending.Server(req, res, verifyCode);
-        return res.status(201).json({
+        if (!email) return res.status(404).json({
+            "message" : "이메일을 입력해주세요."
+        })
+        else {
+            emailSending.Server(email, res, verifyCode);
+            return res.status(201).json({
             "message": "요청에 성공했습니다.",
             "code" : verifyCode,
-        })
+            })
+        }
     } catch (err) {
         console.error(err);
         return res.status(400).json({
@@ -187,6 +190,7 @@ const signOut = async (req, res) => {
 
 module.exports = {
     createUser,
+    deleteUser,
     userPhoto,
     verifyEmail,
     signIn,
