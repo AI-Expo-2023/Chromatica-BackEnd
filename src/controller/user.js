@@ -56,6 +56,37 @@ const createUser = async(req, res) => {
     }
 }
 
+const deleteUser = async (req, res) => {
+    const userID = req.decoded.id;
+
+    try {
+        if (req.headers.authorization) {
+            const thisUser = User.findOne({
+                where: {userID},
+            })
+
+            if (!thisUser) {
+                return res.status(404).json({ "message": "존재하지 않는 계정입니다." })
+            }
+
+            User.destroy({
+                where : {userID}
+            })
+
+            return res.status(204).json({})
+        }
+
+        return res.status(401).json({
+            "message" : "로그인이 필요합니다."
+        })
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 const userPhoto = async (req, res) => {
     const userID = req.params.userID.split(':')[1];
 
@@ -164,8 +195,6 @@ const signIn = async (req, res) => {
 
 const signOut = async (req, res) => {
     const userID = req.decoded.id;
-
-    console.log(userID)
 
     try {
         if (!userID) return res.status(404).json({
