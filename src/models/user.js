@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
       },
       photo: {
-          type: DataTypes.BLOB("long"),
+          type: DataTypes.STRING(),
           allowNull: false,
       },
       accessToken: {

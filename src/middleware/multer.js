@@ -1,5 +1,6 @@
 const multer = require('multer');
 const fs = require('fs')
+const path = require('path')
 
 try {
     fs.readdirSync('./upload');
@@ -12,11 +13,11 @@ const upload = multer({
     dest: 'upload/',
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            cb(null, `upload/${req.file.filename}` || 'upload/image.png');
+            cb(null, `upload/`);
         },
         filename: (req, file, cb) => {
-            let newFileName = new Date().valueOf() + path.extname(file.originalname)
-            cb(null, newFileName);
+            const ext = path.extname(file.originalname);
+            cb(null, path.basename(file.originalname, ext) + Date.now() + ext);
         }
     }),
 });

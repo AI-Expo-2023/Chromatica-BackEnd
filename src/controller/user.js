@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
+const path = require('path')
 const verifyToken = require('../middleware/JWT');
 const emailSending = require('../middleware/email');
 const jwt = require('jsonwebtoken');
@@ -56,22 +57,22 @@ const createUser = async(req, res) => {
 }
 
 const userPhoto = async (req, res) => {
-    const userID = req.params.userID;
-    const photo = req.file;
-
-    console.log(photo)
+    const userID = req.params.userID.split(':')[1];
 
     try {
-        const user = await User.findOne({
+        const thisUser = await User.findOne({
             where: { userID },
         })
 
-        if (!user) return res.status(404).json({
+        if (!thisUser) return res.status(404).json({
             "message" : "요청하신 사용자를 찾을 수 없습니다."
         })
+        
+        const ext = path.extname(req.file.originalname);
+        const filePath = `${path.basename(req.file.originalname, ext)} + ${Date.now()} + ${ext}`;
 
-        await user.update({
-            photo,
+        await thisUser.update({
+            photo: filePath,
         })
 
         return res.status(200).json({
