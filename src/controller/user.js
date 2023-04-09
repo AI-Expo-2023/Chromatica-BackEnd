@@ -275,6 +275,33 @@ const getOtherUser = async (req, res) => {
     }
   };
 
+const findPW = async(req, res)=>{
+    const { Email, new_PW } = req.body;
+    try {
+      const thisUser = await User.findOne({
+        where: {
+          Email
+        },
+      });
+      const newHashPassword = crypto
+        .pbkdf2Sync(new_PW, thisUser.salt, 2, 32, "sha512")
+        .toString("hex");
+  
+      await thisUser.update({
+        PW: newHashPassword,
+      });
+  
+      res.status(200).json({
+        message: "비밀번호가 수정되었습니다.",
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(400).json({
+        message: "요청에 실패했습니다.",
+      });
+    }
+}
+ 
 module.exports = {
     createUser,
     deleteUser,
@@ -284,4 +311,5 @@ module.exports = {
     signOut,
     getUser,
     getOtherUser,
+    findPW,
 }
