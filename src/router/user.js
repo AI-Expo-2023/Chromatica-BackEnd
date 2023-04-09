@@ -12,5 +12,6 @@ router.patch('/:userID/photo', upload.single("profile"), controller.userPhoto);
 router.post('/email', controller.verifyEmail);
 router.post('/log', controller.signIn);
 router.delete('/log', jwt, controller.signOut);
+router.get('/:userID', jwt, controller.getUser);
 
 module.exports = router;

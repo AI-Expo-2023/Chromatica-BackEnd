@@ -1,4 +1,4 @@
-const User = require('../models').User;
+const { User } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -218,6 +218,33 @@ const signOut = async (req, res) => {
     }
 }
 
+const getUser = async (req, res) => {
+    const userID = req.decoded.id;
+
+    try{
+    const thisUser = await User.findOne({
+        where : { userID }
+    })
+    if(!thisUser) {
+        return res.status(404).json({
+        "message" : "URI를 찾을 수 없습니다."
+        })
+    }
+    return res.status(200).json({
+        userID,
+        "userName" : thisUser.name,
+        "userEmail" : thisUser.Email,
+        "userPhoto" : thisUser.photo,
+    });
+    } catch ( err ) {
+        console.error(err)
+        return res.status(400).json({
+        "message" : "요청에 실패했습니다."
+        })
+        
+    }
+}
+
 module.exports = {
     createUser,
     deleteUser,
@@ -225,4 +252,5 @@ module.exports = {
     verifyEmail,
     signIn,
     signOut,
+    getUser,
 }
