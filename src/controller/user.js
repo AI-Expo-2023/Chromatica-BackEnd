@@ -245,6 +245,36 @@ const getUser = async (req, res) => {
     }
 }
 
+const getOtherUser = async (req, res) => {
+    const userID = req.params.userID.split(':')[1];
+
+    try {
+      const thisUser = await User.findOne({
+        where: {
+          userID,
+        },
+      });
+        
+        if (!thisUser) {
+            return res.status(404).json({
+              "message" : "존재하지 않는 계정입니다."
+          })
+      }
+  
+        return res.status(200).json({
+          userID,
+          name: thisUser.name,
+          Email: thisUser.Email,
+          photo: thisUser.photo,
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({
+        message: "요청에 실패했습니다.",
+      });
+    }
+  };
+
 const findPW = async(req, res)=>{
     const { Email, new_PW } = req.body;
     try {
@@ -271,7 +301,7 @@ const findPW = async(req, res)=>{
       });
     }
 }
-  
+ 
 module.exports = {
     createUser,
     deleteUser,
@@ -280,5 +310,6 @@ module.exports = {
     signIn,
     signOut,
     getUser,
+    getOtherUser,
     findPW,
 }
