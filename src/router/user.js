@@ -15,5 +15,6 @@ router.delete('/log', jwt, controller.signOut);
 router.patch('/findPW', controller.findPW);
 router.get('/', jwt, controller.getUser);
 router.get('/:userID', controller.getOtherUser);
+router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
 
 module.exports = router;
