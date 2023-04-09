@@ -13,6 +13,7 @@ router.post('/email', controller.verifyEmail);
 router.post('/log', controller.signIn);
 router.delete('/log', jwt, controller.signOut);
 router.patch('/findPW', controller.findPW);
+router.patch('/updatePW', jwt, controller.updatePW);
 router.get('/', jwt, controller.getUser);
 router.get('/:userID', controller.getOtherUser);
 router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);

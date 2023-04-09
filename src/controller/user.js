@@ -302,6 +302,51 @@ const findPW = async(req, res)=>{
     }
 }
 
+const updatePW = async (req, res) => {
+    const userID = req.decoded.id;
+    const { PW, newPW } = req.body;
+
+    try {
+        const thisUser = await User.findOne({
+            where: { userID }
+        })
+        
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+        
+        const HashPassword = crypto
+        .pbkdf2Sync(PW, thisUser.salt, 2, 32, "sha512")
+        .toString("hex");
+      
+        if (HashPassword !== thisUser.PW) {
+            return res.status(409).json({
+                "message" : "비밀번호가 일치하지 않습니다."
+            })
+        }
+
+        const newHashPassword = crypto
+        .pbkdf2Sync(newPW, thisUser.salt, 2, 32, "sha512")
+        .toString("hex");
+        
+        thisUser.update({
+            PW : newHashPassword,
+        })
+
+        return res.status(200).json({
+            "message" : "요청에 성공했습니다."
+        })
+
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 const updateUser = async (req, res) => {
     const userID = req.decoded.id;
     const newName = req.body.name;
@@ -358,5 +403,6 @@ module.exports = {
     getUser,
     getOtherUser,
     findPW,
+    updatePW,
     updateUser,
 }
