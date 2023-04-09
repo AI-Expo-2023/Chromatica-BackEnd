@@ -13,5 +13,6 @@ router.post('/email', controller.verifyEmail);
 router.post('/log', controller.signIn);
 router.delete('/log', jwt, controller.signOut);
 router.get('/:userID', jwt, controller.getUser);
+router.patch('/findPW', controller.findPW);
 
 module.exports = router;
