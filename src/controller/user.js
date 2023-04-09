@@ -100,7 +100,7 @@ const userPhoto = async (req, res) => {
         })
         
         const ext = path.extname(req.file.originalname);
-        const filePath = `${path.basename(req.file.originalname, ext)} + ${Date.now()} + ${ext}`;
+        const filePath = `${path.basename(req.file.originalname, ext)}${Date.now()}${ext}`;
 
         await thisUser.update({
             photo: filePath,
@@ -301,6 +301,52 @@ const findPW = async(req, res)=>{
       });
     }
 }
+
+const updateUser = async (req, res) => {
+    const userID = req.decoded.id;
+    const newName = req.body.name;
+
+    try {
+        const thisUser = await User.findOne({
+            where: { userID },
+        })
+
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+
+        if (req.file) {
+            const ext = path.extname(req.file.originalname);
+            const filePath = `${path.basename(req.file.originalname, ext)}${Date.now()}${ext}`;
+
+            console.log(filePath)
+
+            await thisUser.update({
+                name: newName,
+                photo: filePath,
+            })
+
+            return res.status(200).json({
+                thisUser
+            })
+        }
+
+        await thisUser.update({
+            name : newName,
+        })
+
+        return res.status(200).json({
+            thisUser
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
  
 module.exports = {
     createUser,
@@ -312,4 +358,5 @@ module.exports = {
     getUser,
     getOtherUser,
     findPW,
+    updateUser,
 }
