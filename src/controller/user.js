@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Photo } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -6,6 +6,7 @@ const verifyToken = require('../middleware/JWT');
 const emailSending = require('../middleware/email');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { Op } = require('sequelize');
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ const createUser = async(req, res) => {
     const PW = req.body.PW;
     const name = req.body.name;
     const Email = req.body.Email;
-    const photo = '../upload/image.png';
+    const photo = '/upload/image.png';
 
     try {
         const salt = crypto.randomBytes(32).toString("hex");
@@ -392,6 +393,61 @@ const updateUser = async (req, res) => {
         })
     }
 }
+
+const otherUserImage = async (req, res) => {
+    const userID = req.params.userID.split(':')[1];
+    const pageNumber = req.body.pageNumber;
+
+    try {
+        const thisUser = await Photo.findOne({
+            where: { userID }
+        })
+
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+
+        const Users = await Photo.findAll({
+            where: {
+                userID,
+            }
+        })
+
+        const image = Users.length;
+
+        return res.status(200).json({
+            images: [
+                Users[(pageNumber - 1) * 18],
+                Users[(pageNumber - 1) * 18 + 1],
+                Users[(pageNumber - 1) * 18 + 2],
+                Users[(pageNumber - 1) * 18 + 3],
+                Users[(pageNumber - 1) * 18 + 4],
+                Users[(pageNumber - 1) * 18 + 5],
+                Users[(pageNumber - 1) * 18 + 6],
+                Users[(pageNumber - 1) * 18 + 7],
+                Users[(pageNumber - 1) * 18 + 8],
+                Users[(pageNumber - 1) * 18 + 9],
+                Users[pageNumber * 18 - 8],
+                Users[pageNumber * 18 - 7],
+                Users[pageNumber * 18 - 6],
+                Users[pageNumber * 18 - 5],
+                Users[pageNumber * 18 - 4],
+                Users[pageNumber * 18 - 3],
+                Users[pageNumber * 18 - 2],
+                Users[pageNumber * 18 - 1],
+            ],
+            image,
+        })
+
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
  
 module.exports = {
     createUser,
@@ -405,4 +461,5 @@ module.exports = {
     findPW,
     updatePW,
     updateUser,
+    otherUserImage,
 }

@@ -17,5 +17,6 @@ router.patch('/updatePW', jwt, controller.updatePW);
 router.get('/', jwt, controller.getUser);
 router.get('/:userID', controller.getOtherUser);
 router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
+router.get('/:userID/image', controller.otherUserImage);
 
 module.exports = router;
