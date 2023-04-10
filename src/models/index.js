@@ -10,8 +10,12 @@ db.Sequelize = Sequelize;
 
 db.User = require('./user')(sequelize, Sequelize);
 db.Design = require('./design')(sequelize, Sequelize);
+db.Photo = require('./photo.js')(sequelize, Sequelize)
 
 db.User.hasOne(db.Design, { foreignKey: 'userID', sourceKey: 'userID' })
 db.Design.belongsTo(db.User, { foreignKey : 'userID', targetKey : 'userID'})
+
+db.User.hasMany(db.Photo, { foreignKey: 'userID', sourceKey: 'userID' })
+db.Photo.belongsTo(db.User, { foreignKey: 'userID', targetKey: 'userID' })
 
 module.exports = db;
