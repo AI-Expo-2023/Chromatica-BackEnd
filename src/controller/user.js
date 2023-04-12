@@ -251,9 +251,7 @@ const getOtherUser = async (req, res) => {
 
     try {
       const thisUser = await User.findOne({
-        where: {
-          userID,
-        },
+        where: { userID },
       });
         
         if (!thisUser) {
@@ -451,6 +449,7 @@ const otherUserImage = async (req, res) => {
 
 const likedPhoto = async (req, res) => {
     const userID = req.params.userID.split(':')[1];
+    const { pageNumber } = req.body;
 
     try {
         const thisUser = await User.findOne({
@@ -462,7 +461,7 @@ const likedPhoto = async (req, res) => {
             })
         }
 
-        const likedImage = await Like.findOne({
+        const likedImage = await Like.findAll({
             where: { userID }
         })        
 
@@ -472,8 +471,32 @@ const likedPhoto = async (req, res) => {
             })
         }
         
+        const manyImage = await Like.count({
+            where: { userID }
+        })
+
         return res.status(200).json({
-            likedImage,
+            images: [
+                likedImage[(pageNumber - 1) * 18],
+                likedImage[(pageNumber - 1) * 18 + 1],
+                likedImage[(pageNumber - 1) * 18 + 2],
+                likedImage[(pageNumber - 1) * 18 + 3],
+                likedImage[(pageNumber - 1) * 18 + 4],
+                likedImage[(pageNumber - 1) * 18 + 5],
+                likedImage[(pageNumber - 1) * 18 + 6],
+                likedImage[(pageNumber - 1) * 18 + 7],
+                likedImage[(pageNumber - 1) * 18 + 8],
+                likedImage[(pageNumber - 1) * 18 + 9],
+                likedImage[pageNumber * 18 - 8],
+                likedImage[pageNumber * 18 - 7],
+                likedImage[pageNumber * 18 - 6],
+                likedImage[pageNumber * 18 - 5],
+                likedImage[pageNumber * 18 - 4],
+                likedImage[pageNumber * 18 - 3],
+                likedImage[pageNumber * 18 - 2],
+                likedImage[pageNumber * 18 - 1],
+            ],
+            manyImage,
         })
 
     } catch (err) {
