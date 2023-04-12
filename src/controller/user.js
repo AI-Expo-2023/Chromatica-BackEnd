@@ -463,13 +463,7 @@ const likedPhoto = async (req, res) => {
 
         const likedImage = await Like.findAll({
             where: { userID }
-        })        
-
-        if (likedImage == null) {
-            return res.status(404).json({
-                "message" : "해당하는 게시글이 존재하지 않습니다."
-            })
-        }
+        })
         
         const manyImage = await Like.count({
             where: { userID }
@@ -506,6 +500,58 @@ const likedPhoto = async (req, res) => {
         })
     }
 }
+
+const myPhoto = async (req, res) => {
+    const userID = req.decoded.id;
+    const pageNumber = req.body.pageNumber;
+
+    try {
+        const thisUser = await User.findOne({
+            where: { userID }
+        })
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+        const images = await Photo.findAll({
+            where: { userID }
+        })
+
+        const manyImage = await Photo.count({
+            where: { userID }
+        })
+
+        return res.status(200).json({
+            images: [
+                images[(pageNumber - 1) * 18],
+                images[(pageNumber - 1) * 18 + 1],
+                images[(pageNumber - 1) * 18 + 2],
+                images[(pageNumber - 1) * 18 + 3],
+                images[(pageNumber - 1) * 18 + 4],
+                images[(pageNumber - 1) * 18 + 5],
+                images[(pageNumber - 1) * 18 + 6],
+                images[(pageNumber - 1) * 18 + 7],
+                images[(pageNumber - 1) * 18 + 8],
+                images[(pageNumber - 1) * 18 + 9],
+                images[pageNumber * 18 - 8],
+                images[pageNumber * 18 - 7],
+                images[pageNumber * 18 - 6],
+                images[pageNumber * 18 - 5],
+                images[pageNumber * 18 - 4],
+                images[pageNumber * 18 - 3],
+                images[pageNumber * 18 - 2],
+                images[pageNumber * 18 - 1],
+            ],
+
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
  
 module.exports = {
     createUser,
@@ -521,4 +567,5 @@ module.exports = {
     updateUser,
     otherUserImage,
     likedPhoto,
+    myPhoto,
 }
