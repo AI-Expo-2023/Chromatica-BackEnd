@@ -1,14 +1,14 @@
-const { Design } = require('../models');
+const { Save } = require('../models');
 const path = require('path')
 
 require('dotenv').config();
 
 const saveImage = async (req, res) => {
     const userID = req.decoded.id;
-    const accessToken = req.headers.authorization
+    const accessToken = req.headers.authorization;
 
     const ext = path.extname(req.file.originalname);
-    const filePath = `${path.basename(req.file.originalname, ext)} + ${Date.now()} + ${ext}`;
+    const filePath = `${path.basename(req.file.originalname, ext)}${Date.now()}${ext}`;
 
     try {
         if (!accessToken) {
@@ -17,12 +17,12 @@ const saveImage = async (req, res) => {
             })
         }
 
-        const thisSave = await Design.findOne({
+        const thisSave = await Save.findOne({
             where: {userID},
         })
 
         if (!thisSave) {
-            const newSave = await Design.create({
+            const newSave = await Save.create({
                 userID,
                 photo: filePath,
             })
