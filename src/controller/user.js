@@ -1,4 +1,4 @@
-const { User, Photo, Like } = require('../models');
+const { User, Photo, Like, Save } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -518,9 +518,7 @@ const myPhoto = async (req, res) => {
             where: { userID }
         })
 
-        const manyImage = await Photo.count({
-            where: { userID }
-        })
+        const manyImage = images.length;
 
         return res.status(200).json({
             images: [
@@ -543,8 +541,60 @@ const myPhoto = async (req, res) => {
                 images[pageNumber * 18 - 2],
                 images[pageNumber * 18 - 1],
             ],
-
+            manyImage
         })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
+const saveImageList = async (req, res) => {
+    const userID = req.decoded.id;
+    const pageNumber = req.body.pageNumber;
+    
+    try {
+        const thisUser = await User.findOne({
+            where: { userID }
+        })
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+
+        const thisUserSaved = await Save.findAll({
+            where: { userID }
+        })
+        
+        const manyImage = Save.length;
+
+        return res.status(200).json({
+            image: [
+                thisUserSaved[(pageNumber - 1) * 18],
+                thisUserSaved[(pageNumber - 1) * 18 + 1],
+                thisUserSaved[(pageNumber - 1) * 18 + 2],
+                thisUserSaved[(pageNumber - 1) * 18 + 3],
+                thisUserSaved[(pageNumber - 1) * 18 + 4],
+                thisUserSaved[(pageNumber - 1) * 18 + 5],
+                thisUserSaved[(pageNumber - 1) * 18 + 6],
+                thisUserSaved[(pageNumber - 1) * 18 + 7],
+                thisUserSaved[(pageNumber - 1) * 18 + 8],
+                thisUserSaved[(pageNumber - 1) * 18 + 9],
+                thisUserSaved[pageNumber * 18 - 8],
+                thisUserSaved[pageNumber * 18 - 7],
+                thisUserSaved[pageNumber * 18 - 6],
+                thisUserSaved[pageNumber * 18 - 5],
+                thisUserSaved[pageNumber * 18 - 4],
+                thisUserSaved[pageNumber * 18 - 3],
+                thisUserSaved[pageNumber * 18 - 2],
+                thisUserSaved[pageNumber * 18 - 1]
+            ],
+            manyImage
+        })
+
     } catch (err) {
         console.error(err)
         return res.status(400).json({
@@ -568,4 +618,5 @@ module.exports = {
     otherUserImage,
     likedPhoto,
     myPhoto,
+    saveImageList,
 }

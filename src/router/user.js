@@ -16,6 +16,7 @@ router.patch('/findPW', controller.findPW);
 router.patch('/updatePW', jwt, controller.updatePW);
 router.get('/', jwt, controller.getUser);
 router.get('/image', jwt, controller.myPhoto);
+router.get('/save', jwt, controller.saveImageList);
 router.get('/:userID', controller.getOtherUser);
 router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
 router.get('/:userID/image', controller.otherUserImage);
