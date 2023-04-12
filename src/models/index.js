@@ -12,6 +12,7 @@ db.User = require('./user')(sequelize, Sequelize);
 db.Design = require('./design')(sequelize, Sequelize);
 db.Photo = require('./photo.js')(sequelize, Sequelize);
 db.Like = require('./like.js')(sequelize, Sequelize);
+db.Save = require('./save')(sequelize, Sequelize);
 
 db.User.hasOne(db.Design, { foreignKey: 'userID', sourceKey: 'userID' })
 db.Design.belongsTo(db.User, { foreignKey : 'userID', targetKey : 'userID'})
@@ -27,5 +28,11 @@ db.Like.belongsTo(db.User, { foreignKey: 'userID', targetKey: 'userID' })
 
 db.Photo.hasOne(db.Like, { foreignKey: 'photoID', sourceKey: 'photoID' })
 db.Like.belongsTo(db.Photo, { foreignKey: 'photoID', targetKey: 'photoID' })
+
+db.Design.hasOne(db.Save, { foreignKey: 'imageID', sourceKey: 'imageID' })
+db.Save.belongsTo(db.Design, { foreignKey: 'imageID', targetKey: 'imageID' })
+
+db.Design.hasOne(db.Save, { foreignKey: 'userID', sourceKey: 'userID' })
+db.Save.belongsTo(db.Design, { foreignKey: 'userID', targetKey: 'userID' })
 
 module.exports = db;
