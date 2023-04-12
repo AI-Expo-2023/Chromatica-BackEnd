@@ -18,5 +18,6 @@ router.get('/', jwt, controller.getUser);
 router.get('/:userID', controller.getOtherUser);
 router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
 router.get('/:userID/image', controller.otherUserImage);
+router.get('/:userID/liked', controller.likedPhoto);
 
 module.exports = router;

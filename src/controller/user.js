@@ -1,4 +1,4 @@
-const { User, Photo } = require('../models');
+const { User, Photo, Like } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -448,6 +448,41 @@ const otherUserImage = async (req, res) => {
         })
     }
 }
+
+const likedPhoto = async (req, res) => {
+    const userID = req.params.userID.split(':')[1];
+
+    try {
+        const thisUser = await User.findOne({
+            where: { userID }
+        })    
+        if (!thisUser) {
+            return res.status(404).json({
+                "message" : "존재하지 않는 계정입니다."
+            })
+        }
+
+        const likedImage = await Like.findOne({
+            where: { userID }
+        })        
+
+        if (likedImage == null) {
+            return res.status(404).json({
+                "message" : "해당하는 게시글이 존재하지 않습니다."
+            })
+        }
+        
+        return res.status(200).json({
+            likedImage,
+        })
+
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
  
 module.exports = {
     createUser,
@@ -462,4 +497,5 @@ module.exports = {
     updatePW,
     updateUser,
     otherUserImage,
+    likedPhoto,
 }
