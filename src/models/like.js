@@ -1,7 +1,7 @@
 const sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("Design", {
+    return sequelize.define("Like",{
         imageID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -12,17 +12,15 @@ module.exports = (sequelize, DataTypes) => {
               type: DataTypes.STRING(20),
               primaryKey: true,
               allowNull: false,
-          },
-        photo: {
-            type: DataTypes.STRING(),
-            allowNull: false,
         },
-        keyword: {
-            type: DataTypes.STRING(),
-        }
+        photoID: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            allowNull : false,
+        },
     },
     {
         charset: 'utf8mb4',
         collate: 'utf8mb4_general_ci'
-    });
+    })
 }
