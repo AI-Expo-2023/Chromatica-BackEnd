@@ -112,49 +112,48 @@ const readPhoto = async (req, res) => {
   }
 };
 
-// const deletePhoto = async (req, res) => {
-//     const photoId = req.params.photoID;
-//     const userId = req.decoded.userID;
+const deletePhoto = async (req, res) => {
+    const photoID = req.params.photoID.split(':')[1];
+    const userId = req.decoded.id;
+
+    try {
+      if(!userId) {
+        return res.status(401).json({
+          "message" : "로그인이 필요합니다."
+        })
+      }
+
+      const photo = await Photo.findOne({
+        where: {
+          photoID,
+        },
+      });
   
-//     try {
-//       const photo = await Photo.findOne({
-//         where: {
-//           photoID,
-//         },
-//       });
+      console.log(photo);
   
-//       console.log(photo);
+      if (photo.userID != userId) {
+        res.status(403).json({
+          "message": '자신의 계정에만 액세스할 수 있습니다',
+        });
+      } else {
+        await Like.destroy({
+          where: { photoID },
+      });
+        await photo.destroy();
   
-//       if (Photo.userID !== userId) {
-//         res.status(400).json({
-//           message: '요청에 실패했습니다.',
-//         });
-//       } else if (err.name === 'JsonWebTokenError') {
-//         res.status(401).json({
-//           message: '로그인이 필요합니다.',
-//         });
-//       } else {
-//         await Like.destroy({
-//           where: {
-//             photoID: photoId,
-//           },
-//       });
-//         await photo.destroy();
-  
-//         res.status(200).json({
-//           message: '게시물 삭제 성공',
-//         });
-//       }
-//     } catch (err) {
-//       res.status(403).json({
-//         message: '자신의 계정에만 액세스 가능합니다.',
-//       });
-//       console.error(err);
-//     }
-// };
+        res.status(204).json({});
+      }
+    } catch (err) {
+      console.error(err);
+      return res.status(400).json({
+        "message": '요청에 실패했습니다.'
+      });
+    }
+};
 
 module.exports = {
   createPhoto,
   readPhoto,
+  deletePhoto,
 };
 
