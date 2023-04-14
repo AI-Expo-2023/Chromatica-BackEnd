@@ -6,6 +6,6 @@ const jwt = require('../middleware/JWT');
 
 const controller = require('../controller/design');
 
-router.put('/', jwt, upload.single("save"), controller.saveImage);
+router.post('/', jwt, upload.single("save"), controller.createSaveImage);
 
 module.exports = router;
