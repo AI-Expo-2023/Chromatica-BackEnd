@@ -38,6 +38,41 @@ const createSaveImage = async (req, res) => {
     }
 }
 
+const updateSaveImage = async (req, res) => {
+    const userID = req.decoded.id;
+    const { imageURL } = req.body;
+    const imageID = req.params.imageID.split(':')[1];
+
+    try {
+        if (!userID) {
+            return res.status(401).json({
+                "message" : "로그인이 필요합니다."
+            })
+        }
+        const thisSave = await Save.findOne({
+            where: { imageID }
+        })
+
+        if (!thisSave) {
+            return res.status(404).json({
+                "message" : "임시저장한 작품이 존재하지 않습니다."
+            })
+        }
+        await thisSave.update({
+            photo : imageURL,
+        })
+        return res.status(200).json({
+            "message" : "요청에 성공했습니다."
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     createSaveImage,
+    updateSaveImage,
 }
