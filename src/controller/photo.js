@@ -4,13 +4,9 @@ const path = require('path');
 const { Op } = require('sequelize');
 
 const createPhoto = async (req, res) => {
-    const photo = req.file;
-    const {head, tag, description} = req.body;
+    const { photo, head, tag, description} = req.body;
     
     const userID = req.decoded.id;
-
-    const ext = path.extname(req.file.originalname);
-    const filePath = `${path.basename(req.file.originalname, ext)}`
     
   try {  
     if (!photo || !head || !tag || !description) {
@@ -20,12 +16,8 @@ const createPhoto = async (req, res) => {
     }
 
     const thisDesign = await Design.findOne({
-        where: {
-          photo : {[Op.startsWith] : filePath},
-          },
+        where: { photo },
     });
-
-    console.log(thisDesign)
 
     const thisPhoto = await Photo.create({
         photoID : thisDesign.imageID,
