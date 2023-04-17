@@ -211,12 +211,18 @@ const like = async (req, res) => {
     })
     if (thisLike) {
       await thisLike.destroy({})
+      await thisPhoto.update({
+        like: thisPhoto.like - 1,
+      })
       return res.status(204).json()
     } else {
       await Like.create({
         userID,
         photoID,
         imageID: photoID,
+      })
+      await thisPhoto.update({
+        like : thisPhoto.like + 1,
       })
       return res.status(201).json({
         "message" : "좋아요를 생성했습니다."
