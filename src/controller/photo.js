@@ -113,7 +113,7 @@ const readPhoto = async (req, res) => {
 };
 
 const updatePhoto = async (req, res) => {
-  const photoID = req.params.photoID.split(':')[1];
+  const photoID = req.params.photoID.split;
   const userID = req.decoded.id;
   const { head, tag, description } = req.body;
 
@@ -157,7 +157,7 @@ const updatePhoto = async (req, res) => {
 
 
 const deletePhoto = async (req, res) => {
-    const photoID = req.params.photoID.split(':')[1];
+    const photoID = req.params.photoID.split;
     const userId = req.decoded.id;
 
     try {
