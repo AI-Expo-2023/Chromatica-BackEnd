@@ -54,7 +54,7 @@ const createPhoto = async (req, res) => {
 };
   
 const readPhoto = async (req, res) => {
-  const photoID = req.params.photoID.split;
+  const photoID = req.params.photoID;
   const userID = req.decoded.id || null;
 
     try {
@@ -192,33 +192,49 @@ const deletePhoto = async (req, res) => {
     }
 };
 
-// const getTags = async (req, res) => {
-//   try {
-//     const tags = await Photo.findAll({
-//       attributes: ['tag'],
-//       group: ['tag'],
-//     });
-//     res.status(200).json({
-//       "message" : "요청에 성공했습니다.",
-//       tags,
-//     });
-//   } catch (err) {
-//     if (err.name === 'CastError' && err.kind === 'ObjectId') {
-//       return res.status(404).json({
-//         "message" : "URI를 불러오지 못했습니다.",
-//       });
-//     }
-//     return res.status(400).json({
-//       "message" : "요청에 실패했습니다.",
-//     });
-//   }
-// };
+const like = async (req, res) => {
+  const userID = req.decoded.id;
+  const { photoID } = req.params;
+  
+  try {
+    const thisPhoto = await Photo.findOne({
+      where: { photoID }
+    })
+    if (!thisPhoto) {
+      return res.status(404).json({
+         "message" : "존재하지 않는 게시글입니다."
+       })
+    }
+  
+    const thisLike = await Like.findOne({
+      where: { photoID, userID }
+    })
+    if (thisLike) {
+      await thisLike.destroy({})
+      return res.status(204).json()
+    } else {
+      await Like.create({
+        userID,
+        photoID,
+        imageID: photoID,
+      })
+      return res.status(201).json({
+        "message" : "좋아요를 생성했습니다."
+      })
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(400).json({
+      "message" : "요청에 실패했습니다."
+    })
+  }
+}
 
 module.exports = {
   createPhoto,
   readPhoto,
   updatePhoto,
   deletePhoto,
-  // getTags,
+  like,
 };
 
