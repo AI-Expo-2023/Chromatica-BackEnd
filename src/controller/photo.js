@@ -54,7 +54,7 @@ const createPhoto = async (req, res) => {
 };
   
 const readPhoto = async (req, res) => {
-  const photoID = req.params.photoID.split(':')[1];
+  const photoID = req.params.photoID;
   const userID = req.decoded.id || null;
 
     try {

@@ -89,7 +89,7 @@ const deleteUser = async (req, res) => {
 }
 
 const userPhoto = async (req, res) => {
-    const userID = req.params.userID.split(':')[1];
+    const userID = req.params.userID;
 
     try {
         const thisUser = await User.findOne({
@@ -247,7 +247,7 @@ const getUser = async (req, res) => {
 }
 
 const getOtherUser = async (req, res) => {
-    const userID = req.params.userID.split(':')[1];
+    const userID = req.params.userID;
 
     try {
       const thisUser = await User.findOne({
@@ -393,7 +393,7 @@ const updateUser = async (req, res) => {
 }
 
 const otherUserImage = async (req, res) => {
-    const userID = req.params.userID.split(':')[1];
+    const userID = req.params.userID;
     const pageNumber = req.body.pageNumber;
 
     try {
@@ -448,7 +448,7 @@ const otherUserImage = async (req, res) => {
 }
 
 const likedPhoto = async (req, res) => {
-    const userID = req.params.userID.split(':')[1];
+    const userID = req.params.userID;
     const { pageNumber } = req.body;
 
     try {
