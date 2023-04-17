@@ -41,7 +41,7 @@ const createSaveImage = async (req, res) => {
 const updateSaveImage = async (req, res) => {
     const userID = req.decoded.id;
     const { imageURL } = req.body;
-    const imageID = req.params.imageID.split(':')[1];
+    const imageID = req.params.imageID;
 
     try {
         if (!userID) {
