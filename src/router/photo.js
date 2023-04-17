@@ -9,5 +9,7 @@ router.post('/', jwt, upload.single('photo'), controller.createPhoto);
 router.patch('/:photoID', jwt, controller.updatePhoto);
 router.get('/:photoID', jwt, controller.readPhoto);
 router.delete('/:photoID', jwt, controller.deletePhoto);
+router.post('/:photoID/like', jwt, controller.like);
+router.delete('/:photoID/like', jwt, controller.like);
 
 module.exports = router;

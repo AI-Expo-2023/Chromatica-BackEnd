@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         userID: {
-              type: DataTypes.STRING(20),
-              primaryKey: true,
-              allowNull: false,
+            type: DataTypes.STRING(20),
+            primaryKey: true,
+            allowNull: false,
         },
         photoID: {
             type: DataTypes.INTEGER,
