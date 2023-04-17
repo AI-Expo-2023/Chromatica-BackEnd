@@ -54,7 +54,7 @@ const createPhoto = async (req, res) => {
 };
   
 const readPhoto = async (req, res) => {
-  const photoID = req.params.photoID.split(':')[1];
+  const photoID = req.params.photoID.split;
   const userID = req.decoded.id || null;
 
     try {
@@ -112,8 +112,52 @@ const readPhoto = async (req, res) => {
   }
 };
 
+const updatePhoto = async (req, res) => {
+  const photoID = req.params.photoID.split;
+  const userID = req.decoded.id;
+  const { head, tag, description } = req.body;
+
+  try {
+    const photo = await Photo.findOne({
+      where: { photoID },
+    });
+
+    if (!photo) {
+      return res.status(404).json({
+        message: '해당 게시물이 존재하지 않습니다.',
+      });
+    }
+
+    if (photo.userID !== userID) {
+      return res.status(403).json({
+        message: '자신의 게시물에만 수정할 수 있습니다.',
+      });
+    }
+
+    await photo.update({
+      head,
+      tag,
+      description,
+    });
+
+    return res.status(200).json({
+      message: '게시물 수정 성공',
+    });
+  } catch (err) {
+    if (err.name === 'CastError' && err.kind === 'ObjectId') {
+      return res.status(404).json({
+        message: '잘못된 URI입니다.',
+      });
+    }
+    return res.status(400).json({
+      message: '요청에 실패했습니다.',
+    });
+  }
+};
+
+
 const deletePhoto = async (req, res) => {
-    const photoID = req.params.photoID.split(':')[1];
+    const photoID = req.params.photoID.split;
     const userId = req.decoded.id;
 
     try {
@@ -128,9 +172,6 @@ const deletePhoto = async (req, res) => {
           photoID,
         },
       });
-  
-      console.log(photo);
-  
       if (photo.userID != userId) {
         res.status(403).json({
           "message": '자신의 계정에만 액세스할 수 있습니다',
@@ -151,9 +192,33 @@ const deletePhoto = async (req, res) => {
     }
 };
 
+// const getTags = async (req, res) => {
+//   try {
+//     const tags = await Photo.findAll({
+//       attributes: ['tag'],
+//       group: ['tag'],
+//     });
+//     res.status(200).json({
+//       "message" : "요청에 성공했습니다.",
+//       tags,
+//     });
+//   } catch (err) {
+//     if (err.name === 'CastError' && err.kind === 'ObjectId') {
+//       return res.status(404).json({
+//         "message" : "URI를 불러오지 못했습니다.",
+//       });
+//     }
+//     return res.status(400).json({
+//       "message" : "요청에 실패했습니다.",
+//     });
+//   }
+// };
+
 module.exports = {
   createPhoto,
   readPhoto,
+  updatePhoto,
   deletePhoto,
+  // getTags,
 };
 
