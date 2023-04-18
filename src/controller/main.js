@@ -10,6 +10,7 @@ const getMain = async (req, res) => {
             }],
             attributes: ['photoID', 'photo', 'head', 'like'],
             limit: 6,
+            order: [['like', 'DESC']]
         })
 
         return res.status(200).json({

@@ -37,12 +37,6 @@ app.listen(port, () => {
     sequelize.sync({ force: false})
     .then(() => {
         console.log("Success linking Database");
-
-        setInterval(async () => {
-            await sequelize.query('SELECT * FROM `Photos` ORDER BY `like` DESC');
-            console.log('hellop')
-        }, 1000 * 5)
-
     })
     .catch((err) => {
         console.error(err)
