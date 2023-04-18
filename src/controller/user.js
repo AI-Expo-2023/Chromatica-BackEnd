@@ -408,21 +408,17 @@ const otherUserImage = async (req, res) => {
         }
 
         const Users = await Photo.findAll({
-            where: {
-                userID,
-            }
+            where: { userID },
+            limit: 18,
+            offset: (pageNumber - 1) * 18,
         })
 
-        let userImages = []
-
-        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
-            userImages.push(Users[i]);
-        }
-
-        const image = Users.length;
+        const image = await Photo.count({
+            where: { userID }
+        });
 
         return res.status(200).json({
-            images: userImages,
+            images: Users,
             image,
         })
 
@@ -449,21 +445,17 @@ const likedPhoto = async (req, res) => {
         }
 
         const likedImage = await Like.findAll({
-            where: { userID }
+            where: { userID },
+            limit: 18,
+            offset: (pageNumber - 1) * 18
         })
-
-        let likedimages = [];
-
-        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
-            likedimages.push(likedImage[i]);
-        }
 
         const manyImage = await Like.count({
             where: { userID }
         })
 
         return res.status(200).json({
-            images: likedimages,
+            images: likedImage,
             manyImage,
         })
 
@@ -488,17 +480,15 @@ const myPhoto = async (req, res) => {
                 "message" : "존재하지 않는 계정입니다."
             })
         }
-        const image = await Photo.findAll({
-            where: { userID }
+        const images = await Photo.findAll({
+            where: { userID },
+            limit: 18,
+            offset: (pageNumber - 1) * 18
         })
 
-        let images = []
-
-        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
-            images.push(image[i]);
-        }
-
-        const manyImage = image.length;
+        const manyImage = await Photo.count({
+            where: { userID }
+        });
 
         return res.status(200).json({
             images,
@@ -527,19 +517,17 @@ const saveImageList = async (req, res) => {
         }
 
         const thisUserSaved = await Save.findAll({
-            where: { userID }
+            where: { userID },
+            limit: 18,
+            offset: (pageNumber - 1) * 18
         })
-        
-        let saves = []
 
-        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
-            saves.push(thisUserSaved[i]);
-        }
-
-        const manyImage = thisUserSaved.length;
+        const manyImage = await Save.count({
+            where: { userID }
+        });
 
         return res.status(200).json({
-            image: saves,
+            image: thisUserSaved,
             manyImage
         })
 
