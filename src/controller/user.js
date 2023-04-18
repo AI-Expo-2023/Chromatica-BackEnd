@@ -448,7 +448,7 @@ const likedPhoto = async (req, res) => {
             where: { userID },
             include: [{
                 model: Photo,
-                attributes: ['imageID', 'photoID', 'userID', 'photo', 'like']
+                attributes: ['imageID', 'photoID', 'userID', 'head', 'photo', 'like']
             }, {
                 model: User,
                 attributes: ['name', 'photo']
