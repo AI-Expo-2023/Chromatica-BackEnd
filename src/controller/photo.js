@@ -20,6 +20,7 @@ const createPhoto = async (req, res) => {
     });
 
     const thisPhoto = await Photo.create({
+        imageID : thisDesign.imageID,
         photoID : thisDesign.imageID,
         userID,
         photo : thisDesign.photo,
