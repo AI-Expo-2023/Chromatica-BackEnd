@@ -38,13 +38,10 @@ app.listen(port, () => {
     .then(() => {
         console.log("Success linking Database");
 
-        const { Photo } = require('./models');
-
         setInterval(async () => {
-            await Photo.findAll({
-                order: [['like', 'DESC']],
-            })
-        }, 1000 * 3600 * 24)
+            await sequelize.query('SELECT * FROM `Photos` ORDER BY `like` DESC');
+            console.log('hellop')
+        }, 1000 * 5)
 
     })
     .catch((err) => {
