@@ -413,29 +413,16 @@ const otherUserImage = async (req, res) => {
             }
         })
 
+        let userImages = []
+
+        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
+            userImages.push(Users[i]);
+        }
+
         const image = Users.length;
 
         return res.status(200).json({
-            images: [
-                Users[(pageNumber - 1) * 18],
-                Users[(pageNumber - 1) * 18 + 1],
-                Users[(pageNumber - 1) * 18 + 2],
-                Users[(pageNumber - 1) * 18 + 3],
-                Users[(pageNumber - 1) * 18 + 4],
-                Users[(pageNumber - 1) * 18 + 5],
-                Users[(pageNumber - 1) * 18 + 6],
-                Users[(pageNumber - 1) * 18 + 7],
-                Users[(pageNumber - 1) * 18 + 8],
-                Users[(pageNumber - 1) * 18 + 9],
-                Users[pageNumber * 18 - 8],
-                Users[pageNumber * 18 - 7],
-                Users[pageNumber * 18 - 6],
-                Users[pageNumber * 18 - 5],
-                Users[pageNumber * 18 - 4],
-                Users[pageNumber * 18 - 3],
-                Users[pageNumber * 18 - 2],
-                Users[pageNumber * 18 - 1],
-            ],
+            images: userImages,
             image,
         })
 
@@ -464,32 +451,19 @@ const likedPhoto = async (req, res) => {
         const likedImage = await Like.findAll({
             where: { userID }
         })
-        
+
+        let likedimages = [];
+
+        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
+            likedimages.push(likedImage[i]);
+        }
+
         const manyImage = await Like.count({
             where: { userID }
         })
 
         return res.status(200).json({
-            images: [
-                likedImage[(pageNumber - 1) * 18],
-                likedImage[(pageNumber - 1) * 18 + 1],
-                likedImage[(pageNumber - 1) * 18 + 2],
-                likedImage[(pageNumber - 1) * 18 + 3],
-                likedImage[(pageNumber - 1) * 18 + 4],
-                likedImage[(pageNumber - 1) * 18 + 5],
-                likedImage[(pageNumber - 1) * 18 + 6],
-                likedImage[(pageNumber - 1) * 18 + 7],
-                likedImage[(pageNumber - 1) * 18 + 8],
-                likedImage[(pageNumber - 1) * 18 + 9],
-                likedImage[pageNumber * 18 - 8],
-                likedImage[pageNumber * 18 - 7],
-                likedImage[pageNumber * 18 - 6],
-                likedImage[pageNumber * 18 - 5],
-                likedImage[pageNumber * 18 - 4],
-                likedImage[pageNumber * 18 - 3],
-                likedImage[pageNumber * 18 - 2],
-                likedImage[pageNumber * 18 - 1],
-            ],
+            images: likedimages,
             manyImage,
         })
 
@@ -514,33 +488,20 @@ const myPhoto = async (req, res) => {
                 "message" : "존재하지 않는 계정입니다."
             })
         }
-        const images = await Photo.findAll({
+        const image = await Photo.findAll({
             where: { userID }
         })
 
-        const manyImage = images.length;
+        let images = []
+
+        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
+            images.push(image[i]);
+        }
+
+        const manyImage = image.length;
 
         return res.status(200).json({
-            images: [
-                images[(pageNumber - 1) * 18],
-                images[(pageNumber - 1) * 18 + 1],
-                images[(pageNumber - 1) * 18 + 2],
-                images[(pageNumber - 1) * 18 + 3],
-                images[(pageNumber - 1) * 18 + 4],
-                images[(pageNumber - 1) * 18 + 5],
-                images[(pageNumber - 1) * 18 + 6],
-                images[(pageNumber - 1) * 18 + 7],
-                images[(pageNumber - 1) * 18 + 8],
-                images[(pageNumber - 1) * 18 + 9],
-                images[pageNumber * 18 - 8],
-                images[pageNumber * 18 - 7],
-                images[pageNumber * 18 - 6],
-                images[pageNumber * 18 - 5],
-                images[pageNumber * 18 - 4],
-                images[pageNumber * 18 - 3],
-                images[pageNumber * 18 - 2],
-                images[pageNumber * 18 - 1],
-            ],
+            images,
             manyImage
         })
     } catch (err) {
@@ -569,29 +530,16 @@ const saveImageList = async (req, res) => {
             where: { userID }
         })
         
-        const manyImage = Save.length;
+        let saves = []
+
+        for (let i = (pageNumber - 1) * 18; i < pageNumber * 18; i++){
+            saves.push(thisUserSaved[i]);
+        }
+
+        const manyImage = thisUserSaved.length;
 
         return res.status(200).json({
-            image: [
-                thisUserSaved[(pageNumber - 1) * 18],
-                thisUserSaved[(pageNumber - 1) * 18 + 1],
-                thisUserSaved[(pageNumber - 1) * 18 + 2],
-                thisUserSaved[(pageNumber - 1) * 18 + 3],
-                thisUserSaved[(pageNumber - 1) * 18 + 4],
-                thisUserSaved[(pageNumber - 1) * 18 + 5],
-                thisUserSaved[(pageNumber - 1) * 18 + 6],
-                thisUserSaved[(pageNumber - 1) * 18 + 7],
-                thisUserSaved[(pageNumber - 1) * 18 + 8],
-                thisUserSaved[(pageNumber - 1) * 18 + 9],
-                thisUserSaved[pageNumber * 18 - 8],
-                thisUserSaved[pageNumber * 18 - 7],
-                thisUserSaved[pageNumber * 18 - 6],
-                thisUserSaved[pageNumber * 18 - 5],
-                thisUserSaved[pageNumber * 18 - 4],
-                thisUserSaved[pageNumber * 18 - 3],
-                thisUserSaved[pageNumber * 18 - 2],
-                thisUserSaved[pageNumber * 18 - 1]
-            ],
+            image: saves,
             manyImage
         })
 
