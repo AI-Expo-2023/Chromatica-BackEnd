@@ -6,7 +6,7 @@ const getMain = async (req, res) => {
         const sortPhoto = await Photo.findAll({
             include: [{
                 model: User,
-                attributes: ['name', 'photo']
+                attributes: ['name', 'photo', 'userID']
             }],
             attributes: ['photoID', 'photo', 'head', 'like']
         })
