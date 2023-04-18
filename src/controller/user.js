@@ -446,8 +446,15 @@ const likedPhoto = async (req, res) => {
 
         const likedImage = await Like.findAll({
             where: { userID },
-            limit: 18,
-            offset: (pageNumber - 1) * 18
+            include: [{
+                model: Photo,
+                attributes: ['imageID', 'photoID', 'userID', 'photo', 'like']
+            }, {
+                model: User,
+                attributes: ['name', 'photo']
+                }
+            ],
+            attributes: ['photoID']
         })
 
         const manyImage = await Like.count({
