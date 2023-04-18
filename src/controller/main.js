@@ -8,13 +8,19 @@ const getMain = async (req, res) => {
                 model: User,
                 attributes: ['name', 'photo']
             }],
-            order: [['like', 'DESC']],
             attributes: ['photoID', 'photo', 'head', 'like']
         })
 
         return res.status(200).json({
             "message": "조회에 성공했습니다.",
-            sortPhoto
+            "sortPhoto": [
+                sortPhoto[0],
+                sortPhoto[1],
+                sortPhoto[2],
+                sortPhoto[3],
+                sortPhoto[4],
+                sortPhoto[5]
+            ]
         })
 
     } catch (err) {

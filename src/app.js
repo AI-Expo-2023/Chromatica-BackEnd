@@ -37,6 +37,15 @@ app.listen(port, () => {
     sequelize.sync({ force: false})
     .then(() => {
         console.log("Success linking Database");
+
+        const { Photo } = require('./models');
+
+        setInterval(async () => {
+            await Photo.findAll({
+                order: [['like', 'DESC']],
+            })
+        }, 1000 * 3600 * 24)
+
     })
     .catch((err) => {
         console.error(err)
