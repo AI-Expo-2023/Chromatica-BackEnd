@@ -14,7 +14,14 @@ const getMain = async (req, res) => {
 
         return res.status(200).json({
             "message": "조회에 성공했습니다.",
-            sortPhoto
+            "sortPhoto": [
+                sortPhoto[0],
+                sortPhoto[1],
+                sortPhoto[2],
+                sortPhoto[3],
+                sortPhoto[4],
+                sortPhoto[5]
+            ]
         })
 
     } catch (err) {
