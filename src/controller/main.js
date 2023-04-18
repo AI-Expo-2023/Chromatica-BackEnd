@@ -8,7 +8,6 @@ const getMain = async (req, res) => {
                 model: User,
                 attributes: ['name', 'photo']
             }],
-            order: [['like', 'DESC']],
             attributes: ['photoID', 'photo', 'head', 'like']
         })
 
