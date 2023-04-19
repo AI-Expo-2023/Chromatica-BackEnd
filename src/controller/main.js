@@ -51,7 +51,36 @@ const getRank = async (req, res) => {
     }
 }
 
+const getLastPhoto = async (req, res) => {
+
+    const { pageNumber } = req.body;
+
+    try {
+        const sortPhoto = await Photo.findAll({
+            include: [{
+                model: User,
+                attributes: ['name', 'photo', 'userID']
+            }],
+            attributes: ['photoID', 'photo', 'head', 'like', 'createdAt'],
+            limit: 18,
+            offset: (pageNumber - 1) * 18,
+            order: [['createdAt', 'DESC']]
+        })
+        
+        return res.status(200).json({
+            "message": "조회에 성공했습니다.",
+            sortPhoto,
+        })
+    } catch (err) {
+        console.error(err);
+        return res.status(400).json({
+            "message" : "요청에 실패했습니다."
+        })
+    }
+}
+
 module.exports = {
     getMain,
     getRank,
+    getLastPhoto
 }
