@@ -394,7 +394,7 @@ const updateUser = async (req, res) => {
 
 const otherUserImage = async (req, res) => {
     const userID = req.params.userID;
-    const pageNumber = req.body.pageNumber;
+    const { pageNumber } = req.params;
 
     try {
         const thisUser = await Photo.findOne({
@@ -431,8 +431,8 @@ const otherUserImage = async (req, res) => {
 }
 
 const likedPhoto = async (req, res) => {
-    const userID = req.params.userID;
-    const { pageNumber } = req.body;
+    const userID = req.decoded.id;
+    const { pageNumber } = req.params;
 
     try {
         const thisUser = await User.findOne({
@@ -478,7 +478,7 @@ const likedPhoto = async (req, res) => {
 
 const myPhoto = async (req, res) => {
     const userID = req.decoded.id;
-    const pageNumber = req.body.pageNumber;
+    const { pageNumber } = req.params;
 
     try {
         const thisUser = await User.findOne({
@@ -514,7 +514,7 @@ const myPhoto = async (req, res) => {
 
 const saveImageList = async (req, res) => {
     const userID = req.decoded.id;
-    const pageNumber = req.body.pageNumber;
+    const { pageNumber } = req.params;
     
     try {
         const thisUser = await User.findOne({

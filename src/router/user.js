@@ -15,11 +15,11 @@ router.delete('/log', jwt, controller.signOut);
 router.patch('/findPW', controller.findPW);
 router.patch('/updatePW', jwt, controller.updatePW);
 router.get('/', jwt, controller.getUser);
-router.get('/image', jwt, controller.myPhoto);
-router.get('/save', jwt, controller.saveImageList);
+router.get('/image/:pageNumber', jwt, controller.myPhoto);
+router.get('/save/:pageNumber', jwt, controller.saveImageList);
 router.get('/info/:userID', controller.getOtherUser);
 router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
-router.get('/:userID/image', controller.otherUserImage);
-router.get('/liked', jwt,controller.likedPhoto);
+router.get('/:userID/image/:pageNumber', controller.otherUserImage);
+router.get('/liked/:pageNumber', jwt,controller.likedPhoto);
 
 module.exports = router;
