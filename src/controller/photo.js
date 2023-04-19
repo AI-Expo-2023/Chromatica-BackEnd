@@ -65,8 +65,6 @@ const readPhoto = async (req, res) => {
         where: { photoID }
       });
 
-      console.log(photo)
-
       if (!photo) {
         return res.status(404).json({
           "message": '해당 게시물이 존재하지 않습니다.',
@@ -81,7 +79,8 @@ const readPhoto = async (req, res) => {
             "head" : photo.head,
             "user" : photo.userID,
             "description" : photo.description,
-            "like" : photo.like,
+            "like": photo.like,
+            "tag" : photo.tag,
             "reported" : photo.reported
           }
         })
@@ -98,7 +97,8 @@ const readPhoto = async (req, res) => {
           "head" : photo.head,
           "user" : photo.userID,
           "description" : photo.description,
-          "like" : photo.like,
+          "like": photo.like,
+          "tag" : photo.tag,
           "reported" : photo.reported
         }
       })

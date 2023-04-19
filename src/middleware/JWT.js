@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
 const tokenVerify = async (req, res, next) => {
-    const accessToken = req.headers.authorization.split('Bearer ')[1] || req.query.token;
+    const accessToken = req.headers.authorization || req.query.token;
     const secretKey = process.env.secretKey;
 
     if (!accessToken) {
@@ -12,7 +12,7 @@ const tokenVerify = async (req, res, next) => {
     }
 
     try {
-        return jwt.verify(accessToken, secretKey, async (err, decoded) => {
+        return jwt.verify(accessToken.split('Bearer ')[1], secretKey, async (err, decoded) => {
 
             const thisUser = await User.findOne({
                 where: { userID: decoded.id },
