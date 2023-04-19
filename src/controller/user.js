@@ -489,6 +489,7 @@ const myPhoto = async (req, res) => {
         }
         const images = await Photo.findAll({
             where: { userID },
+            attributes: ['photoID', 'userID', 'head', 'photo', 'like'],
             limit: 18,
             offset: (pageNumber - 1) * 18
         })
