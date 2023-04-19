@@ -20,24 +20,19 @@ const Server = async (email, res, code) => {
         const mailhtml = `
         <div>
     <div id="mainvox">
-    <img src="src/upload/logo.png" />
+    <img src="https://user-images.githubusercontent.com/117415639/233096453-ba33cf75-b4f5-4862-a825-249167e325f1.png" />
     <h1>인증 번호</h1>
     <div>
         계정 인증을 위한 번호입니다. 아래 번호는 5분 뒤 만료됩니다.
-    </div>
     <h3>${code}</h3>
-    <div>
         직접 인증을 요청한 적이 없다면 다른 사람에게 인증 번호를 공유하지 마세요. 개인정보가 도용되었을 수 있으므로 비밀번호 변경이 권장됩니다.
     </div>
-    <img src="src/upload/logo_bars.png" height=10 />
+    <img src="https://user-images.githubusercontent.com/117415639/233096782-488f2a13-b729-4b2f-8911-1b34cecf440b.png" height=10 />
 </div>
 
 <style>
     *{
         font-family: Pretendard;
-    }
-    svg{
-        padding-top: 16px;
     }
     h1{
         margin-bottom: 8px;

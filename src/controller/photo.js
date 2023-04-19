@@ -1,5 +1,6 @@
 const { Photo, Design, User, Like } = require('../models');
 const path = require('path');
+const jwt = require('../middleware/JWT');
 
 const { Op } = require('sequelize');
 
@@ -56,7 +57,8 @@ const createPhoto = async (req, res) => {
   
 const readPhoto = async (req, res) => {
   const photoID = req.params.photoID;
-  const userID = req.decoded.id || null;
+
+  const userID = req.headers.authorization || req.query.token ? req.decoded.id : null;
 
     try {
       const photo = await Photo.findOne({
