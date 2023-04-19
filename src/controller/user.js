@@ -454,7 +454,9 @@ const likedPhoto = async (req, res) => {
                 attributes: ['name', 'photo']
                 }
             ],
-            attributes: ['photoID']
+            attributes: ['photoID'],
+            limit: 18,
+            offset: (pageNumber - 1) * 18
         })
 
         const manyImage = await Like.count({
