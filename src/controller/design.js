@@ -6,7 +6,7 @@ const createSaveImage = async (req, res) => {
     const userID = req.decoded.id;
 
     const photo = req.body.imageURL;
-    console.log(photo, req.body)
+    const imageID = req.body.imageURL.split('/')[4];
 
     try {
         if (!userID) {
@@ -23,6 +23,7 @@ const createSaveImage = async (req, res) => {
             })
         }
         const newSave = await Save.create({
+            imageID,
             userID,
             photo,
         })

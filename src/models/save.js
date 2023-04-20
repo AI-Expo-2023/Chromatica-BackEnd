@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
         imageID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
-            autoIncrement: true,
             allowNull: false,
         },
         userID: {

@@ -35,4 +35,10 @@ db.Save.belongsTo(db.Design, { foreignKey: 'imageID', targetKey: 'imageID' })
 db.Design.hasOne(db.Save, { foreignKey: 'userID', sourceKey: 'userID' })
 db.Save.belongsTo(db.Design, { foreignKey: 'userID', targetKey: 'userID' })
 
+db.User.hasMany(db.Save, { foreignKey: 'userID', sourceKey: 'userID' })
+db.Save.belongsTo(db.User, { foreignKey: 'userID', sourceKey: 'userID' })
+
+db.Photo.hasMany(db.Design, { foreignKey: 'imageID', sourceKey: 'imageID' })
+db.Design.belongsTo(db.Photo, { foreignKey: 'imageID', sourceKey: 'imageID' })
+
 module.exports = db;

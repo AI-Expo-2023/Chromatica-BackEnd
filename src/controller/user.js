@@ -1,4 +1,4 @@
-const { User, Photo, Like, Save } = require('../models');
+const { User, Photo, Like, Save, Design } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -47,7 +47,7 @@ const createUser = async(req, res) => {
         });
 
         return res.status(201).json({
-            "message" : "회원가입에 성공했습니다.",
+            Email,
         })
     } catch (err) {
         console.error(err)
@@ -121,16 +121,16 @@ const userPhoto = async (req, res) => {
 
 const verifyEmail = (req, res) => {
 
-    const email = req.body.Email;
+    const { Email } = req.body;
 
     const verifyCode = Math.floor(Math.random() * 888889) + 111111;
 
     try {
-        if (!email) return res.status(404).json({
+        if (!Email) return res.status(404).json({
             "message" : "이메일을 입력해주세요."
         })
         else {
-            emailSending.Server(email, res, verifyCode);
+            emailSending.Server(Email, res, verifyCode);
             return res.status(201).json({
             "message": "요청에 성공했습니다.",
             "code" : verifyCode,
@@ -291,7 +291,7 @@ const findPW = async(req, res)=>{
       });
   
       res.status(200).json({
-        message: "비밀번호가 수정되었습니다.",
+        Email,
       });
     } catch (err) {
       console.error(err);
@@ -490,8 +490,12 @@ const myPhoto = async (req, res) => {
             })
         }
         const images = await Photo.findAll({
+            include: [{
+                model: User,
+                attributes: ['userID', 'name', 'photo']
+            }],
+            attributes: ['photoID', 'imageID', 'head', 'photo', 'like'],
             where: { userID },
-            attributes: ['photoID', 'userID', 'head', 'photo', 'like'],
             limit: 18,
             offset: (pageNumber - 1) * 18
         })
@@ -516,6 +520,8 @@ const saveImageList = async (req, res) => {
     const userID = req.decoded.id;
     const { pageNumber } = req.params;
     
+    console.log(userID);
+
     try {
         const thisUser = await User.findOne({
             where: { userID }

@@ -14,11 +14,13 @@ const tokenVerify = async (req, res, next) => {
     try {
         return jwt.verify(accessToken.split('Bearer ')[1], secretKey, async (err, decoded) => {
 
+            console.log(decoded)
+
             const thisUser = await User.findOne({
                 where: { userID: decoded.id },
             })
 
-            if (accessToken != thisUser.accessToken) {
+            if (accessToken.split('Bearer ')[1] != thisUser.accessToken) {
                 return res.status(409).json({
                     "message" : "유효하지 않은 토큰입니다."
                 })
