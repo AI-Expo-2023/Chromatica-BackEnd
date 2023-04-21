@@ -397,29 +397,32 @@ const otherUserImage = async (req, res) => {
     const { pageNumber } = req.params;
 
     try {
-        const thisUser = await Photo.findOne({
+        const thisUser = await User.findOne({
             where: { userID }
         })
-
         if (!thisUser) {
             return res.status(404).json({
                 "message" : "존재하지 않는 계정입니다."
             })
         }
-
-        const Users = await Photo.findAll({
+        const images = await Photo.findAll({
+            include: [{
+                model: User,
+                attributes: ['userID', 'name', 'photo']
+            }],
+            attributes: ['photoID', 'imageID', 'head', 'photo', 'like'],
             where: { userID },
             limit: 18,
-            offset: (pageNumber - 1) * 18,
+            offset: (pageNumber - 1) * 18
         })
 
-        const image = await Photo.count({
+        const manyImage = await Photo.count({
             where: { userID }
         });
 
         return res.status(200).json({
-            images: Users,
-            image,
+            images,
+            manyImage
         })
 
     } catch (err) {
@@ -448,7 +451,7 @@ const likedPhoto = async (req, res) => {
             where: { userID },
             include: [{
                 model: Photo,
-                attributes: ['imageID', 'photoID', 'userID', 'head', 'photo', 'like']
+                attributes: ['imageID', 'photoID', 'head', 'photo', 'like']
             }, {
                 model: User,
                 attributes: ['name', 'photo']
