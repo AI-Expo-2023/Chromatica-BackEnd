@@ -58,62 +58,65 @@ const createPhoto = async (req, res) => {
 const readPhoto = async (req, res) => {
   const photoID = req.params.photoID;
 
-  console.log(req.decoded)
+  const userID = req.headers.authorization | req.query.token ? req.decoded.id : null ;
 
-  const userID = req.headers.authorization || req.query.token ? null : req.decoded.id;
+  try {
+    const photo = await Photo.findOne({
+      include: [{
+        model: User,
+        attributes: ['userID', 'name', 'photo'],
+      }],
+      where: { photoID }
+    });
 
-    try {
-      const photo = await Photo.findOne({
-        where: { photoID }
+    if (!photo) {
+      return res.status(404).json({
+        "message": '해당 게시물이 존재하지 않습니다.',
       });
+    }
 
-      if (!photo) {
-        return res.status(404).json({
-          "message": '해당 게시물이 존재하지 않습니다.',
-        });
-      }
-  
-      if(!userID){
-        return res.status(200).json({
-          "hadLiked" : false,
-          "image" : {
-            "photo" : photo.photo,
-            "head" : photo.head,
-            "user" : photo.userID,
-            "description" : photo.description,
-            "like": photo.like,
-            "tag" : photo.tag,
-            "reported" : photo.reported
-          }
-        })
-      }
-
-      const hadLiked = await Like.findOne({
-        where: { photoID }
-      })
-
+    if(!userID){
       return res.status(200).json({
-        hadLiked,
-        "image" : {
+        "hadLiked" : false,
+        "image": {
+          "user": photo.User,
           "photo" : photo.photo,
           "head" : photo.head,
-          "user" : photo.userID,
           "description" : photo.description,
           "like": photo.like,
           "tag" : photo.tag,
           "reported" : photo.reported
         }
       })
+    }
 
-    } catch (err) {
-      if (err.name === 'CastError' && err.kind === 'ObjectId') {
-        return res.status(404).json({
-          "message": '잘못된 URI입니다.',
-        });
+    const hadLiked = await Like.findOne({
+      where: { photoID }
+    })
+
+    return res.status(200).json({
+      hadLiked,
+      "image": {
+        "user": photo.User,
+        "photo" : photo.photo,
+        "head" : photo.head,
+        "description" : photo.description,
+        "like": photo.like,
+        "tag" : photo.tag,
+        "reported" : photo.reported
       }
-      return res.status(400).json({
-        "message" : "요청에 실패했습니다."
-      })
+    })
+
+  } catch (err) {
+    if (err.name === 'CastError' && err.kind === 'ObjectId') {
+      return res.status(404).json({
+        "message": '잘못된 URI입니다.',
+      });
+    }
+    console.error(err);
+    return res.status(400).json({
+      "message" : "요청에 실패했습니다."
+    })
   }
 };
 

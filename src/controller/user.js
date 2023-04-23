@@ -1,4 +1,4 @@
-const { User, Photo, Like, Save, Design } = require('../models');
+const { User, Photo, Like, Save, Design, Report } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -71,6 +71,26 @@ const deleteUser = async (req, res) => {
             }
 
             User.destroy({
+                where : {userID}
+            })
+
+            Like.destroy({
+                where : {userID}
+            })
+
+            Photo.destroy({
+                where : {userID}
+            })
+            
+            Design.destroy({
+                where : {userID}
+            })
+
+            Save.destroy({
+                where : {userID}
+            })
+
+            Report.destroy({
                 where : {userID}
             })
 
