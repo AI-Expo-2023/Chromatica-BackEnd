@@ -1,4 +1,4 @@
-const {Photo, Report, Like} = require('../models');
+const { Photo, Report, Like } = require('../models');
 
 const reportPhoto = async (req, res) =>{
     const photoId = req.params.photoID;

@@ -58,7 +58,9 @@ const createPhoto = async (req, res) => {
 const readPhoto = async (req, res) => {
   const photoID = req.params.photoID;
 
-  const userID = req.headers.authorization || req.query.token ? req.decoded.id : null;
+  console.log(req.decoded)
+
+  const userID = req.headers.authorization || req.query.token ? null : req.decoded.id;
 
     try {
       const photo = await Photo.findOne({
