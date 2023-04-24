@@ -13,9 +13,8 @@ dotenv.config();
 const createUser = async(req, res) => {
     const userID = req.body.ID;
     const PW = req.body.PW;
-    const name = req.body.name;
     const Email = req.body.Email;
-    const photo = '/upload/image.png';
+    const photo = 'https://user-images.githubusercontent.com/117415639/233956130-e888ebc7-0f5f-4909-9a70-20f3070033d9.png';
 
     try {
         const salt = crypto.randomBytes(32).toString("hex");
@@ -40,7 +39,7 @@ const createUser = async(req, res) => {
         await User.create({
             userID,
             Email,
-            name,
+            name: userID,
             PW: hashPassword,
             salt,
             photo,
