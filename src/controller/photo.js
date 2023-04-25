@@ -1,11 +1,13 @@
-const { Photo, Design, User, Like } = require('../models');
+const { Photo, User, Like, Save } = require('../models');
 const path = require('path');
 const jwt = require('../middleware/JWT');
 
 const { Op } = require('sequelize');
 
 const createPhoto = async (req, res) => {
-    const { photo, head, tag, description} = req.body;
+    const { photo, head, tag, description } = req.body;
+  
+    const photoID = req.body.imageURL.split('/')[4];
     
     const userID = req.decoded.id;
     
@@ -16,15 +18,18 @@ const createPhoto = async (req, res) => {
       });
     }
 
-    const thisDesign = await Design.findOne({
-        where: { photo },
-    });
+    const thisSave = await Save.findOne({
+        where: { photo }
+    })
 
-    const thisPhoto = await Photo.create({
-        imageID : thisDesign.imageID,
-        photoID : thisDesign.imageID,
+    if (thisSave) {
+      await thisSave.destroy({})
+    }
+
+    await Photo.create({
+        photoID,
         userID,
-        photo : thisDesign.photo,
+        photo,
         head,
         tag,
         description,
