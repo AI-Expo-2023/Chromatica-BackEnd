@@ -17,7 +17,8 @@ router.get('/', jwt, controller.getUser);
 router.get('/image/:pageNumber', jwt, controller.myPhoto);
 router.get('/save/:pageNumber', jwt, controller.saveImageList);
 router.get('/info/:userID', controller.getOtherUser);
-router.patch('/updateInfo', jwt, upload.single("profile"), controller.updateUser);
+router.patch('/updateInfo', jwt, upload.single("photo"), controller.updateUser);
+router.get('/upload/:filePath', controller.getProfilePhoto);
 router.get('/:userID/image/:pageNumber', controller.otherUserImage);
 router.get('/liked/:pageNumber', jwt,controller.likedPhoto);
 

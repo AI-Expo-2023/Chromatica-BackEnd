@@ -25,7 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors(corsOptions));
 
-app.use(express.static('img'));
+app.use('/user/upload' , express.static('upload'));
 
 app.set("jwt-secret", process.env.JWT);
 
