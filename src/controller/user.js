@@ -384,15 +384,12 @@ const updateUser = async (req, res) => {
             const ext = path.extname(req.file.originalname);
             const filePath = `${path.basename(req.file.originalname, ext)}${Date.now()}${ext}`;
 
-            console.log(filePath)
-
             await thisUser.update({
                 name: newName,
                 photo: filePath,
             })
 
             return res.status(200).json({
-                thisUser
             })
         }
 
@@ -400,9 +397,7 @@ const updateUser = async (req, res) => {
             name : newName,
         })
 
-        return res.status(200).json({
-            thisUser
-        })
+        return res.status(200).json({})
     } catch (err) {
         console.error(err)
         return res.status(400).json({
