@@ -53,7 +53,7 @@ const getRank = async (req, res) => {
 
 const getLastPhoto = async (req, res) => {
 
-    const { pageNumber } = req.body;
+    const { pageNumber } = req.params;
 
     try {
         const sortPhoto = await Photo.findAll({
