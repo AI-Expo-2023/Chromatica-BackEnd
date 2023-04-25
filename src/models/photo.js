@@ -2,12 +2,6 @@ const sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("Photo", {
-        imageID: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-            allowNull: false,
-        },
         photoID: {
             type: DataTypes.INTEGER,
             primaryKey: true,

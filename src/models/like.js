@@ -2,7 +2,7 @@ const sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("Like",{
-        imageID: {
+        photoID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -12,11 +12,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(20),
             primaryKey: true,
             allowNull: false,
-        },
-        photoID: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            allowNull : false,
         },
     },
     {

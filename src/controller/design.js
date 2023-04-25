@@ -6,7 +6,7 @@ const createSaveImage = async (req, res) => {
     const userID = req.decoded.id;
 
     const photo = req.body.imageURL;
-    const imageID = req.body.imageURL.split('/')[4];
+    const photoID = req.body.imageURL.split('/')[4];
 
     try {
         if (!userID) {
@@ -23,7 +23,7 @@ const createSaveImage = async (req, res) => {
             })
         }
         const newSave = await Save.create({
-            imageID,
+            photoID,
             userID,
             photo,
         })
@@ -42,7 +42,7 @@ const createSaveImage = async (req, res) => {
 const updateSaveImage = async (req, res) => {
     const userID = req.decoded.id;
     const { imageURL } = req.body;
-    const imageID = req.params.imageID;
+    const photoID = req.params.imageID;
 
     try {
         if (!userID) {
@@ -51,7 +51,7 @@ const updateSaveImage = async (req, res) => {
             })
         }
         const thisSave = await Save.findOne({
-            where: { imageID }
+            where: { photoID }
         })
 
         if (!thisSave) {
@@ -75,11 +75,11 @@ const updateSaveImage = async (req, res) => {
 
 const deleteSaveImage = async (req, res) => {
     const userID = req.decoded.id;
-    const imageID = req.body.imageID;
+    const photoID = req.body.imageID;
 
     try {
         const thisSave = await Save.findOne({
-            where: { imageID }
+            where: { photoID }
         })
 
         if(!thisSave){
