@@ -18,39 +18,17 @@ const Server = async (email, res, code) => {
 
       try {
         const mailhtml = `
+        <div id="mainvox" style="font-family: Pretendard; width: 500px;">
+        <img style="height: 35px;" src="https://user-images.githubusercontent.com/117415639/233096453-ba33cf75-b4f5-4862-a825-249167e325f1.png" />
+        <h1 style="
+            font-family: Pretendard; margin-bottom: 8px; font-size: 32px;">인증 번호</h1>
         <div>
-    <div id="mainvox">
-    <img src="https://user-images.githubusercontent.com/117415639/233096453-ba33cf75-b4f5-4862-a825-249167e325f1.png" />
-    <h1>인증 번호</h1>
-    <div>
-        계정 인증을 위한 번호입니다. 아래 번호는 5분 뒤 만료됩니다.
-    <h3>${code}</h3>
-        직접 인증을 요청한 적이 없다면 다른 사람에게 인증 번호를 공유하지 마세요. 개인정보가 도용되었을 수 있으므로 비밀번호 변경이 권장됩니다.
-    </div>
-    <img src="https://user-images.githubusercontent.com/117415639/233096782-488f2a13-b729-4b2f-8911-1b34cecf440b.png" height=10 />
-</div>
-
-<style>
-    *{
-        font-family: Pretendard;
-    }
-    h1{
-        margin-bottom: 8px;
-    }
-    h3{
-        background-color: hsl(0, 0%, 90%);
-        padding: 24px;
-        font-size: 36px;
-        letter-spacing: 8;
-    }
-    img{
-        height: 35px;
-    }
-    #mainvox{
-        width: 500px;
-    }
-</style>
-</div>
+            이메일 검증을 위한 인증 번호입니다. 아래 번호는 5분 뒤 만료됩니다.
+        <h3 style="background-color: #ededed; padding: 24px; font-size: 36px; letter-spacing: 12px; border-radius: 8px;">${code}</h3>
+            직접 인증을 요청한 적이 없다면 다른 사람에게 인증 번호를 공유하지 마세요. 개인 정보가 도용되었을 수 있으므로 비밀번호 변경이 권장됩니다.
+        </div>
+        <img style="height: 15px; padding-top: 16px;" src="https://user-images.githubusercontent.com/117415639/233096782-488f2a13-b729-4b2f-8911-1b34cecf440b.png" height=10 />
+        </div>
       `;
   
         const mailOption = {
