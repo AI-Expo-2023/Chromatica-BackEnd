@@ -5,9 +5,10 @@ const jwt = require('../middleware/JWT');
 const { Op } = require('sequelize');
 
 const createPhoto = async (req, res) => {
-    const { photo, head, tag, description } = req.body;
+   const { photo, head, description } = req.body;
+   const tag = req.body.tag.join(',');
   
-    const photoID = req.body.imageURL.split('/')[4];
+    const photoID = req.body.photo.split('/')[4];
     
     const userID = req.decoded.id;
     
@@ -80,6 +81,8 @@ const readPhoto = async (req, res) => {
       });
     }
 
+    const tag = photo.tag.split(',')
+
     if(!userID){
       return res.status(200).json({
         "hadLiked" : false,
@@ -89,7 +92,7 @@ const readPhoto = async (req, res) => {
           "head" : photo.head,
           "description" : photo.description,
           "like": photo.like,
-          "tag" : photo.tag,
+          "tag" : tag,
           "reported" : photo.reported
         }
       })
@@ -232,7 +235,6 @@ const like = async (req, res) => {
       await Like.create({
         userID,
         photoID,
-        imageID: photoID,
       })
       await thisPhoto.update({
         like : thisPhoto.like + 1,

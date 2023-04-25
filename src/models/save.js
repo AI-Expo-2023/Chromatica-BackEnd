@@ -2,7 +2,7 @@ const sequelize = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
     return sequelize.define("Save", {
-        imageID: {
+        photoID: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,

@@ -420,7 +420,7 @@ const otherUserImage = async (req, res) => {
                 model: User,
                 attributes: ['userID', 'name', 'photo']
             }],
-            attributes: ['photoID', 'imageID', 'head', 'photo', 'like'],
+            attributes: ['photoID', 'head', 'photo', 'like'],
             where: { userID },
             limit: 18,
             offset: (pageNumber - 1) * 18
@@ -461,7 +461,7 @@ const likedPhoto = async (req, res) => {
             where: { userID },
             include: [{
                 model: Photo,
-                attributes: ['imageID', 'photoID', 'head', 'photo', 'like']
+                attributes: ['photoID', 'head', 'photo', 'like']
             }, {
                 model: User,
                 attributes: ['name', 'photo']
@@ -507,7 +507,7 @@ const myPhoto = async (req, res) => {
                 model: User,
                 attributes: ['userID', 'name', 'photo']
             }],
-            attributes: ['photoID', 'imageID', 'head', 'photo', 'like'],
+            attributes: ['photoID', 'head', 'photo', 'like'],
             where: { userID },
             limit: 18,
             offset: (pageNumber - 1) * 18
