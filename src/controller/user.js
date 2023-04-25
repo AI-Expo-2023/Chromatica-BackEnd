@@ -134,7 +134,24 @@ const userPhoto = async (req, res) => {
     }
 }
 
-const verifyEmail = (req, res) => {
+const getProfilePhoto = async (req, res) => {
+    const { filePath } = req.params;
+
+    try {
+        if (!filePath) {
+            return res.status(404).json({})
+        }
+
+        return res.status(200).json({
+            filePath
+        })
+    } catch (err) {
+        console.error(err)
+        return res.status(400).json({})
+    }
+}
+
+const verifyEmail = async (req, res) => {
 
     const { Email } = req.body;
 
@@ -250,7 +267,7 @@ const getUser = async (req, res) => {
         userID,
         "userName" : thisUser.name,
         "userEmail" : thisUser.Email,
-        "userPhoto" : thisUser.photo,
+        "userPhoto": thisUser.photo,
     });
     } catch ( err ) {
         console.error(err)
@@ -364,6 +381,8 @@ const updatePW = async (req, res) => {
 const updateUser = async (req, res) => {
     const userID = req.decoded.id;
     const newName = req.body.name;
+
+    console.log(newName, req.data, req.file)
 
     try {
         const thisUser = await User.findOne({
@@ -572,6 +591,7 @@ module.exports = {
     createUser,
     deleteUser,
     userPhoto,
+    getProfilePhoto,
     verifyEmail,
     signIn,
     signOut,

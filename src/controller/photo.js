@@ -64,7 +64,9 @@ const createPhoto = async (req, res) => {
 const readPhoto = async (req, res) => {
   const photoID = req.params.photoID;
 
-  const userID = req.headers.authorization | req.query.token ? req.decoded.id : null ;
+  const userID = req.decoded ? req.decoded.id : null ;
+
+  console.log(req.decoded,userID)
 
   try {
     const photo = await Photo.findOne({
@@ -98,9 +100,11 @@ const readPhoto = async (req, res) => {
       })
     }
 
-    const hadLiked = await Like.findOne({
+    const Liked = await Like.findOne({
       where: { photoID }
     })
+
+    const hadLiked = Liked ? true : false;
 
     return res.status(200).json({
       hadLiked,
