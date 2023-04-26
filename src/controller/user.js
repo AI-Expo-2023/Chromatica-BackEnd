@@ -483,7 +483,7 @@ const likedPhoto = async (req, res) => {
                 attributes: ['photoID', 'head', 'photo', 'like']
             }, {
                 model: User,
-                attributes: ['name', 'photo']
+                attributes: ['userID', 'name', 'photo']
                 }
             ],
             attributes: ['photoID'],

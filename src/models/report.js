@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   },
       {
         charset: 'utf8mb4',
-        collate: 'utf8mb4_general_ci'
+        collate: 'utf8mb4_general_ci',
+        createdAt: false,
+        updatedAt: false,
   });
 };
