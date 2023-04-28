@@ -13,28 +13,29 @@ const createPhoto = async (req, res) => {
     const userID = req.decoded.id;
     
   try {  
-    if (!photo || !head || !tag || !description) {
+    if (!photo || !head || !tagString || !description) {
       return res.status(400).json({
         message: "요청에 실패했습니다.",
       });
     }
+
+    console.log(photo)
 
     const thisSave = await Save.findOne({
         where: { photo }
     })
 
     if (thisSave) {
+      console.log('saveDestroy');
       await thisSave.destroy({})
     }
-
-    const tag = tagString.split(',');
 
     await Photo.create({
         photoID,
         userID,
         photo,
         head,
-        tag,
+        tag : tagString,
         description,
     });
 

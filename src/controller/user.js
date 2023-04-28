@@ -365,7 +365,7 @@ const updatePW = async (req, res) => {
         
         thisUser.update({
             PW: newHashPassword,
-            accessToken: NULL,
+            accessToken: null,
         })
 
         return res.status(200).json({

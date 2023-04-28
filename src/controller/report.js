@@ -19,7 +19,13 @@ const reportPhoto = async (req, res) =>{
             where: { userId, photoId }
         })
 
-        if ( !reported ){
+        if (!reported) {
+            if (reported.userID == userId) {
+                return res.status(409).json({
+                    "message" : "자신의 게시글은 신고할 수 없습니다."
+                })
+            }
+
             await photo.update({
                 reported : photo.reported + 1,
             }); 
