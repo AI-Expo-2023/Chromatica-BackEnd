@@ -305,7 +305,7 @@ const getOtherUser = async (req, res) => {
         message: "요청에 실패했습니다.",
       });
     }
-  };
+}
 
 const findPW = async(req, res)=>{
     const { Email, new_PW } = req.body;
