@@ -104,7 +104,7 @@ const readPhoto = async (req, res) => {
     }
 
     const Liked = await Like.findOne({
-      where: { photoID }
+      where: { userID, photoID }
     })
 
     const hadLiked = Liked ? true : false;
