@@ -75,7 +75,7 @@ const updateSaveImage = async (req, res) => {
 
 const deleteSaveImage = async (req, res) => {
     const userID = req.decoded.id;
-    const photoID = req.body.imageID;
+    const photoID = req.body.photoID;
 
     try {
         const thisSave = await Save.findOne({

@@ -6,24 +6,27 @@ const { Op } = require('sequelize');
 
 const createPhoto = async (req, res) => {
    const { photo, head, description } = req.body;
-   const tag = req.body.tag.join(',');
+   const tagString = req.body.tag.join(',');
   
     const photoID = req.body.photo.split('/')[4];
     
     const userID = req.decoded.id;
     
   try {  
-    if (!photo || !head || !tag || !description) {
+    if (!photo || !head || !tagString || !description) {
       return res.status(400).json({
         message: "요청에 실패했습니다.",
       });
     }
+
+    console.log(photo)
 
     const thisSave = await Save.findOne({
         where: { photo }
     })
 
     if (thisSave) {
+      console.log('saveDestroy');
       await thisSave.destroy({})
     }
 
@@ -32,7 +35,7 @@ const createPhoto = async (req, res) => {
         userID,
         photo,
         head,
-        tag,
+        tag : tagString,
         description,
     });
 
@@ -114,7 +117,7 @@ const readPhoto = async (req, res) => {
         "head" : photo.head,
         "description" : photo.description,
         "like": photo.like,
-        "tag" : photo.tag,
+        "tag" : tag,
         "reported" : photo.reported
       }
     })
@@ -135,7 +138,9 @@ const readPhoto = async (req, res) => {
 const updatePhoto = async (req, res) => {
   const photoID = req.params.photoID.split;
   const userID = req.decoded.id;
-  const { head, tag, description } = req.body;
+  const { head, description } = req.body;
+  const tag = req.body.tag.join(',');
+
 
   try {
     const photo = await Photo.findOne({
@@ -224,6 +229,12 @@ const like = async (req, res) => {
       return res.status(404).json({
          "message" : "존재하지 않는 게시글입니다."
        })
+    }
+
+    if (thisPhoto.userID == userID) {
+      return res.status(409).json({
+        "message" : "자신의 작품에는 좋아요를 누를 수 없습니다."
+      })
     }
   
     const thisLike = await Like.findOne({

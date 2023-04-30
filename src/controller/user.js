@@ -1,4 +1,5 @@
 const { User, Photo, Like, Save, Report } = require('../models');
+const { Sequelize } = require('../models');
 const crypto = require('crypto');
 const upload = require('../middleware/multer');
 const path = require('path')
@@ -14,7 +15,7 @@ const createUser = async(req, res) => {
     const userID = req.body.ID;
     const PW = req.body.PW;
     const Email = req.body.Email;
-    const photo = 'https://user-images.githubusercontent.com/117415639/233956130-e888ebc7-0f5f-4909-9a70-20f3070033d9.png';
+    const photo = '/upload/image.png';
 
     try {
         const salt = crypto.randomBytes(32).toString("hex");
@@ -304,7 +305,7 @@ const getOtherUser = async (req, res) => {
         message: "요청에 실패했습니다.",
       });
     }
-  };
+}
 
 const findPW = async(req, res)=>{
     const { Email, new_PW } = req.body;
@@ -363,7 +364,8 @@ const updatePW = async (req, res) => {
         .toString("hex");
         
         thisUser.update({
-            PW : newHashPassword,
+            PW: newHashPassword,
+            accessToken: null,
         })
 
         return res.status(200).json({
@@ -476,27 +478,45 @@ const likedPhoto = async (req, res) => {
             })
         }
 
-        const likedImage = await Like.findAll({
+        const images = await Like.findAll({
             where: { userID },
             include: [{
                 model: Photo,
-                attributes: ['photoID', 'head', 'photo', 'like']
-            }, {
-                model: User,
-                attributes: ['name', 'photo']
-                }
-            ],
+                attributes: ['photoID', 'head', 'photo', 'like'],
+                include: [{
+                    model: User,
+                    attributes: ['userID', 'name', 'photo'],
+                }]
+            }],
             attributes: ['photoID'],
             limit: 18,
             offset: (pageNumber - 1) * 18
         })
+
+        const thisList = []
+
+        for (let i = 0; i < 18; i++){
+            if (i >= images.length) break;
+            thisList.push(
+                {
+                    "photoID": images[i].photoID,
+                    "Photo": {
+                        "photoID": images[i].Photo.photoID,
+                        "head": images[i].Photo.head,
+                        "photo": images[i].Photo.photo,
+                        "like": images[i].Photo.like,
+                    },
+                    "User": images[i].Photo.User
+                }
+            )
+        }
 
         const manyImage = await Like.count({
             where: { userID }
         })
 
         return res.status(200).json({
-            images: likedImage,
+            "images" : thisList,
             manyImage,
         })
 

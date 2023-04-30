@@ -66,10 +66,15 @@ const getLastPhoto = async (req, res) => {
             offset: (pageNumber - 1) * 18,
             order: [['createdAt', 'DESC']]
         })
+
+        const manyImage = await Photo.count({
+            where: {}
+        })
         
         return res.status(200).json({
             "message": "조회에 성공했습니다.",
             sortPhoto,
+            manyImage
         })
     } catch (err) {
         console.error(err);
