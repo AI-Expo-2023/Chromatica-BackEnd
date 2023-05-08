@@ -7,8 +7,8 @@ const upload = require('../middleware/multer');
 const jwt = require('../middleware/JWT');
 const newJwt = require('../middleware/newVerify');
 
-router.post('/', jwt, upload.single('photo'), controller.createPhoto);
-router.post('/new', jwt, upload.single('photo'), controller.createPhotoDeleteSave);
+router.post('/new', jwt, upload.single('photo'), controller.createPhoto);
+router.post('/', jwt, upload.single('photo'), controller.createPhotoDeleteSave);
 router.patch('/:photoID', jwt, controller.updatePhoto);
 router.get('/:photoID', newJwt ,controller.readPhoto);
 router.delete('/:photoID', jwt, controller.deletePhoto);
