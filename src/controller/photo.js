@@ -64,6 +64,63 @@ const createPhoto = async (req, res) => {
     
 };
   
+const createPhotoDeleteSave = async (req, res) => {
+  const { photo, head, description, imgId } = req.body;
+  const tagString = req.body.tag.join(',');
+ 
+   const photoID = req.body.photo.split('/')[4];
+   
+   const userID = req.decoded.id;
+   
+ try {  
+   if (!photo || !head || !tagString || !description) {
+     return res.status(400).json({
+       message: "요청에 실패했습니다.",
+     });
+   }
+
+   const thisSave = await Save.findOne({
+       where: { photoID : imgId }
+   })
+
+   if (thisSave) {
+     await thisSave.destroy({})
+   }
+
+   await Photo.create({
+       photoID,
+       userID,
+       photo,
+       head,
+       tag : tagString,
+       description,
+   });
+
+   res.status(201).json({
+       "message" : '게시물 작성 성공',
+   });
+
+   } catch (err) {
+       if (err.name === 'ValidationError') {
+           res.status(400).json({
+             message: '요청에 실패했습니다.',
+          });
+       } else if (err.name === 'JsonWebTokenError') {
+           res.status(401).json({
+             message: '로그인이 필요합니다.',
+           });
+       } else if (err.name === 'CastError' && err.kind === 'ObjectId') {
+           res.status(404).json({
+             message: 'URI를 불러오지 못했습니다.',
+           });
+       }
+       
+       console.error(err);
+       return res.status(400).json({"message" : "에러"});
+   }
+   
+};
+
 const readPhoto = async (req, res) => {
   const photoID = req.params.photoID;
 
@@ -268,6 +325,7 @@ const like = async (req, res) => {
 
 module.exports = {
   createPhoto,
+  createPhotoDeleteSave,
   readPhoto,
   updatePhoto,
   deletePhoto,
