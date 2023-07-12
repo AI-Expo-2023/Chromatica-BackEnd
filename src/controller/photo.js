@@ -79,13 +79,15 @@ const createPhotoDeleteSave = async (req, res) => {
      });
    }
 
-   const thisSave = await Save.findOne({
-       where: { photoID : imgId }
-   })
+  if (imgId) {
+    const thisSave = await Save.findOne({
+        where: { photoID : imgId }
+    })
 
-   if (thisSave) {
-     await thisSave.destroy({})
-   }
+    if (thisSave) {
+      await thisSave.destroy({})
+    }     
+  }
 
    await Photo.create({
        photoID,
